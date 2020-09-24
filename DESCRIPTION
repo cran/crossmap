@@ -1,6 +1,6 @@
 Package: crossmap
 Title: Apply Functions to All Combinations of List Elements
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(given = "Alexander",
            family = "Rossell Hayes",
@@ -14,11 +14,12 @@ Description: Provides an extension to the 'purrr' family of
     of elements of lists or rows of data frames, and applying multiple
     models to multiple subsets of a dataset.
 License: MIT + file LICENSE
-URL: https://github.com/rossellhayes/crossmap
+URL: https://crossmap.rossellhayes.com,
+        https://github.com/rossellhayes/crossmap
 BugReports: https://github.com/rossellhayes/crossmap/issues
 Imports: purrr, rlang
 Suggests: broom, covr, crayon, dplyr (>= 1.0.0), furrr, future, stats,
-        testthat
+        testthat, tibble
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
@@ -27,9 +28,9 @@ Collate: 'errors.R' 'autonames.R' 'isFALSE.R' 'cross_fit.R'
         'future_map_vec.R' 'future_xmap.R' 'future_xmap_mat.R'
         'map_vec.R' 'vectorize.R' 'xmap.R' 'xmap_mat.R'
 NeedsCompilation: no
-Packaged: 2020-09-02 22:52:45 UTC; Alex
+Packaged: 2020-09-24 00:59:37 UTC; Alex
 Author: Alexander Rossell Hayes [aut, cre, cph]
     (<https://orcid.org/0000-0001-9412-0457>)
 Maintainer: Alexander Rossell Hayes <alexander@rossellhayes.com>
 Repository: CRAN
-Date/Publication: 2020-09-10 10:10:03 UTC
+Date/Publication: 2020-09-24 07:30:02 UTC
