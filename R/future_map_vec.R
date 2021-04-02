@@ -17,13 +17,12 @@
 #'   Non-parallelized equivalents: [map_vec()], [map2_vec()],
 #'   [pmap_vec()], [imap_vec()] and [xmap_vec()]
 #'
-#' @include errors.R
 #' @export
 #'
 #' @example examples/future_map_vec.R
 
 future_map_vec <- function(
-  .x, .f, ..., .progress = FALSE, .options = furrr::future_options()
+  .x, .f, ..., .progress = FALSE, .options = furrr::furrr_options()
 ) {
   require_furrr()
 
@@ -36,7 +35,7 @@ future_map_vec <- function(
 #' @export
 
 future_map2_vec <- function(
-  .x, .y, .f, ..., .progress = FALSE, .options = furrr::future_options()
+  .x, .y, .f, ..., .progress = FALSE, .options = furrr::furrr_options()
 ) {
   require_furrr()
 
@@ -51,7 +50,7 @@ future_map2_vec <- function(
 #' @export
 
 future_pmap_vec <- function(
-  .l, .f, ..., .progress = FALSE, .options = furrr::future_options()
+  .l, .f, ..., .progress = FALSE, .options = furrr::furrr_options()
 ) {
   require_furrr()
 
@@ -64,7 +63,7 @@ future_pmap_vec <- function(
 #' @export
 
 future_imap_vec <- function(
-  .x, .f, ..., .progress = FALSE, .options = furrr::future_options()
+  .x, .f, ..., .progress = FALSE, .options = furrr::furrr_options()
 ) {
   require_furrr()
 
@@ -77,7 +76,7 @@ future_imap_vec <- function(
 #' @export
 
 future_xmap_vec <- function(
-  .l, .f, ..., .progress = FALSE, .options = furrr::future_options()
+  .l, .f, ..., .progress = FALSE, .options = furrr::furrr_options()
 ) {
   require_furrr()
 

@@ -5,7 +5,8 @@
 #'
 #' @param ... [Data frames][data.frame] or a [list] of data frames -- including
 #'   data frame extensions (e.g. [tibbles][tibble::tibble()]) and lazy data
-#'   frames (e.g. from dbplyr or dtplyr)
+#'   frames (e.g. from dbplyr or dtplyr).
+#'   [`NULL`] inputs are silently ignored.
 #' @param copy If inputs are not from the same data source, and copy is
 #'   `TRUE`, then they will be copied into the same src as the first input.
 #'   This allows you to join tables across srcs, but it is a potentially
@@ -20,17 +21,15 @@
 #'     If columns have the same name, suffixes are added to disambiguate.
 #'   - Groups are taken from the first input.
 #'
-#' @seealso [cross_list()] to find combinations of elements of vectors and lists.
+#' @seealso [cross_list()] to find combinations of elements of vectors
+#'   and lists.
 #'
-#' @include errors.R
 #' @export
 #'
 #' @example examples/cross_join.R
 
 cross_join <- function(..., copy = FALSE) {
-  require_package("dplyr")
-
-  .x <- rlang::list2(...)
+  .x <- compact_null(rlang::list2(...))
   .x <- lapply(.x, function(.x) if (inherits(.x, "list")) {.x} else {list(.x)})
   .x <- purrr::flatten(.x)
 
@@ -51,4 +50,3 @@ cross_join <- function(..., copy = FALSE) {
 
   purrr::reduce(.x, ~ dplyr::full_join(.x, .y, by = character(), copy = copy))
 }
-

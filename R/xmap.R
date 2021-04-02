@@ -12,7 +12,6 @@
 #' `xmap()` and `xwalk()` apply the function `.f` to each row.
 #' `xmap_dfr()` and `xmap_dfc()` return data frames created by row-binding and
 #' column-binding respectively.
-#' They require dplyr to be installed.
 #'
 #' @param .l A list of vectors, such as a data frame.
 #'   The length of .l determines the number of arguments that .f will be called
@@ -64,7 +63,6 @@
 #'   [purrr::map()], [purrr::map2()], and [purrr::pmap()] for other mapping
 #'   functions.
 #'
-#' @include errors.R
 #' @export
 #'
 #' @example examples/xmap.R
@@ -91,7 +89,6 @@ xmap_dbl <- function(.l, .f, ...) {
 #' @export
 
 xmap_dfc <- function(.l, .f, ...) {
-  require_package("dplyr")
   purrr::pmap_dfc(cross_list(.l), .f, ...)
 }
 
@@ -99,7 +96,6 @@ xmap_dfc <- function(.l, .f, ...) {
 #' @export
 
 xmap_dfr <- function(.l, .f, ..., .id = NULL) {
-  require_package("dplyr")
   purrr::pmap_dfr(cross_list(.l), .f, ..., .id)
 }
 

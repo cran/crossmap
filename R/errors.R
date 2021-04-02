@@ -1,14 +1,13 @@
-code <- function(x) {
-  x <- encodeString(x, quote = "`")
-  if (requireNamespace("crayon", quietly = TRUE)) {x <- crayon::silver(x)}
+style <- function(x, quote, color) {
+  x <- encodeString(x, quote = quote)
+  if (rlang::is_installed("crayon")) {
+    x <- do.call(color, list(x), envir = asNamespace("crayon"))
+  }
   x
 }
 
-field <- function(x) {
-  x <- encodeString(x, quote = "'")
-  if (requireNamespace("crayon", quietly = TRUE)) {x <- crayon::blue(x)}
-  x
-}
+code  <- function(x) {style(x, "`", "silver")}
+field <- function(x) {style(x, "'", "blue")}
 
 abort_if_not_df <- function(x) {
   format.character <- function(x) {encodeString(x, quote = '"')}
@@ -35,23 +34,25 @@ abort_if_not_df <- function(x) {
 }
 
 abort_if_not_formulas <- function(x) {
-  format.character <- function(x) {encodeString(x, quote = '"')}
+  # format.character <- function(x) {encodeString(x, quote = '"')}
 
   x    <- rlang::flatten(x)
   nfs  <- which(!vapply(x, inherits, logical(1), "formula"))
-  ln   <- length(nfs)
-  args <- match.call(sys.function(-1), sys.call(-1))[["formulas"]]
 
-  if (ln) {
+  if (length(nfs)) {
+    args <- format(x, justify = "none")
+
+    problems <- paste(
+      code(args), "is of type",
+      field(vapply(x[nfs], typeof, character(1)))
+    )[seq_len(min(length(nfs), 5))]
+
+    names(problems) <- rep("x", length(problems))
+
     message <- c(
       paste(code("formulas"), "must all be of type", field("formula")),
-      paste(
-        code(
-          vapply(nfs + 1, function(x) format(args[[x]]), character(1))
-        ), "is of type",
-        field(vapply(x[nfs], typeof, character(1)))
-      )[1:min(ln, 5)],
-      if (ln > 5) paste("... and", ln - 5, "more")
+      problems,
+      if (length(nfs) > 5) paste("... and", length(nfs) - 5, "more")
     )
 
     rlang::abort(message)
@@ -75,23 +76,10 @@ warn_if_not_matrix <- function(.l) {
   }
 }
 
-require_r <- function(ver, fn = NULL) {
-  if (getRversion() < numeric_version(ver)) {
-    if (is.null(fn)) {fn <- format(sys.call(-1)[1])}
-
-    rlang::abort(
-      c(
-        paste(code(fn), "requires", field(paste("R", ver)), "or greater."),
-        paste("Try", code('install.packages("installr"); installr::updateR()'))
-      )
-    )
-  }
-}
-
 require_package <- function(package, fn = NULL, ver = NULL) {
-  if (!requireNamespace(package, quietly = TRUE)) {
-    if (is.null(fn)) {fn <- format(sys.call(-1)[1])}
+  if (is.null(fn)) {fn <- format(sys.call(-1)[1])}
 
+  if (!requireNamespace(package, quietly = TRUE)) {
     rlang::abort(
       c(
         paste(code(fn), "requires the", field(package), "package."),
@@ -115,12 +103,54 @@ require_furrr <- function() {
   require_package("furrr",  fn = fn)
   require_package("future", fn = fn)
 
-  if (is.null(attr(future::plan(), "call"))) {
-    rlang::warn(
+  check_unparallelized(fn)
+}
+
+check_unparallelized <- function(fn) {
+  plan         <- future::plan()
+  multiprocess <- future::availableCores() > 1
+  base_fn      <- gsub("future_", "", fn)
+
+  if (!multiprocess) {
+    rlang::inform(
       c(
-        paste("No future plan is set, so", code(fn), "is not parallelized."),
-        paste("Try", code('future::plan("multiprocess")'))
+        paste(code(fn), "is not set up to run background processes."),
+        paste0("You can use ", code(base_fn), "."),
+        i = paste("Check", code("help(plan, future)"), "for more details.")
       )
     )
+  } else if (
+    "uniprocess" %in% class(plan) ||
+      is.null(plan) ||
+      ("multicore" %in% class(plan) && !future::supportsMulticore())
+  ) {
+    rlang::inform(
+      c(
+        paste(code(fn), "is not set up to run background processes."),
+        paste0(
+          "Please choose a ", code("future"), " plan or use ",
+          code(base_fn), "."
+        ),
+        i = paste("Check", code("help(plan, future)"), "for more details.")
+      )
+    )
+
+    if (interactive()) {
+      plan <- utils::menu(
+        c(
+          "Multisession (recommended)",
+          "Sequential (no parallelization)",
+          "Cancel"
+        )
+      )
+
+      switch(
+        plan + 1,
+        invisible(NULL),
+        future::plan("multisession"),
+        future::plan("sequential"),
+        rlang::abort("Cancelled")
+      )
+    }
   }
 }

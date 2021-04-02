@@ -6,12 +6,13 @@
 <!-- badges: start -->
 
 [![](https://www.r-pkg.org/badges/version/crossmap?color=brightgreen)](https://cran.r-project.org/package=crossmap)
-[![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://cran.r-project.org/web/licenses/MIT)
 [![R build
 status](https://github.com/rossellhayes/crossmap/workflows/R-CMD-check/badge.svg)](https://github.com/rossellhayes/crossmap/actions)
-[![](https://codecov.io/gh/rossellhayes/crossmap/branch/master/graph/badge.svg)](https://codecov.io/gh/rossellhayes/crossmap)
+[![](https://codecov.io/gh/rossellhayes/crossmap/branch/main/graph/badge.svg)](https://codecov.io/gh/rossellhayes/crossmap)
+[![CodeFactor](https://www.codefactor.io/repository/github/rossellhayes/crossmap/badge)](https://www.codefactor.io/repository/github/rossellhayes/crossmap)
 [![Dependencies](https://tinyverse.netlify.com/badge/crossmap)](https://cran.r-project.org/package=crossmap)
 <!-- badges: end -->
 
@@ -36,8 +37,8 @@ or the development version from
 [GitHub](https://github.com/rossellhayes/crossmap) with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("rossellhayes/crossmap")
+# install.packages("pak")
+pak::pkg_install("rossellhayes/crossmap")
 ```
 
 ## Usage
@@ -69,6 +70,9 @@ versions of the `xmap()` functions.
 
 ``` r
 future::plan("multiprocess")
+#> Warning: Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead,
+#> explicitly specify either 'multisession' or 'multicore'. In the current R
+#> session, 'multiprocess' equals 'multisession'.
 future_xmap_chr(list(1:3, 1:3), ~ paste(.x, "*", .y, "=", .x * .y))
 #> [1] "1 * 1 = 1" "2 * 1 = 2" "3 * 1 = 3" "1 * 2 = 2" "2 * 2 = 4" "3 * 2 = 6"
 #> [7] "1 * 3 = 3" "2 * 3 = 6" "3 * 3 = 9"
@@ -85,7 +89,7 @@ cross_fit(
   cols     = c(cyl, vs),
   weights  = c(wt, NA)
 )
-#> # A tibble: 40 x 9
+#> # A tibble: 40 x 21
 #>    model   cyl    vs weights term       estimate  std.error statistic    p.value
 #>    <chr> <dbl> <dbl> <chr>   <chr>         <dbl>      <dbl>     <dbl>      <dbl>
 #>  1 hp        4     0 NA      (Intercep~   26     NaN        NaN       NaN       
@@ -98,7 +102,10 @@ cross_fit(
 #>  8 hp        4     1 wt      hp           -0.125   6.39e- 2  -1.95e 0   8.73e- 2
 #>  9 hp        6     0 NA      (Intercep~   23.2     1.02e-14   2.28e15   2.79e-16
 #> 10 hp        6     0 NA      hp           -0.02    7.53e-17  -2.66e14   2.40e-15
-#> # ... with 30 more rows
+#> # ... with 30 more rows, and 12 more variables: r.squared <dbl>,
+#> #   adj.r.squared <dbl>, sigma <dbl>, model.statistic <dbl>,
+#> #   model.p.value <dbl>, df <dbl>, logLik <dbl>, AIC <dbl>, BIC <dbl>,
+#> #   deviance <dbl>, df.residual <int>, nobs <int>
 ```
 
 `cross_list()` finds all combinations of elements from a set of lists.
@@ -155,16 +162,15 @@ means you don’t have to worry about adding `_int()`, `_dbl()` or
 
 ``` r
 map_vec(sample(5), ~ . ^ 2)
-#> [1] 16 25  1  9  4
+#> [1] 25 16  4  1  9
 map_vec(c("apple", "banana", "cantaloupe"), paste0, "s")
 #> [1] "apples"      "bananas"     "cantaloupes"
 ```
 
------
+------------------------------------------------------------------------
 
-Hex sticker font is [Source Sans
-Pro](https://github.com/adobe-fonts/source-sans-pro) by
-[Adobe](https://www.adobe.com).
+Hex sticker font is [Source Sans by
+Adobe](https://github.com/adobe-fonts/source-sans).
 
 Please note that **crossmap** is released with a [Contributor Code of
 Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).

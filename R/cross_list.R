@@ -1,6 +1,7 @@
 #' List all combinations of values
 #'
-#' @param ... Inputs or a [list] of inputs
+#' @param ... Inputs or a [list] of inputs.
+#'   [`NULL`] inputs are silently ignored.
 #'
 #' @return A [list] for `cross_list()` or [tibble][tibble::tibble] for
 #'   `cross_tbl()`.
@@ -15,7 +16,6 @@
 #'
 #'   [expand.grid()] for an implementation that results in a [data.frame].
 #'
-#' @include errors.R
 #' @export
 #'
 #' @example examples/cross_list.R
@@ -26,12 +26,11 @@ cross_list <- function(...) {as.list(cross_df(...))}
 #' @export
 
 cross_tbl <- function(...) {
-  require_package("dplyr")
   dplyr::as_tibble(cross_df(...), .name_repair = "unique")
 }
 
 cross_df <- function(...) {
-  input <- rlang::list2(...)
+  input <- compact_null(rlang::list2(...))
 
   if (length(input) == 1) {input <- purrr::flatten(input)}
 

@@ -9,7 +9,8 @@ cross_join(..., copy = FALSE)
 \arguments{
 \item{...}{\link[=data.frame]{Data frames} or a \link{list} of data frames -- including
 data frame extensions (e.g. \link[tibble:tibble]{tibbles}) and lazy data
-frames (e.g. from dbplyr or dtplyr)}
+frames (e.g. from dbplyr or dtplyr).
+\code{\link{NULL}} inputs are silently ignored.}
 
 \item{copy}{If inputs are not from the same data source, and copy is
 \code{TRUE}, then they will be copied into the same src as the first input.
@@ -32,12 +33,12 @@ Adds columns from a set of data frames, creating all combinations of
 their rows
 }
 \examples{
-fruits <- tibble::tibble(
+fruits <- dplyr::tibble(
   fruit = c("apple", "banana", "cantaloupe"),
   color = c("red", "yellow", "orange")
 )
 
-desserts <- tibble::tibble(
+desserts <- dplyr::tibble(
   dessert = c("cupcake", "muffin", "streudel"),
   makes   = c(8, 6, 1)
 )
@@ -47,5 +48,6 @@ cross_join(list(fruits, desserts))
 cross_join(rep(list(fruits), 3))
 }
 \seealso{
-\code{\link[=cross_list]{cross_list()}} to find combinations of elements of vectors and lists.
+\code{\link[=cross_list]{cross_list()}} to find combinations of elements of vectors
+and lists.
 }

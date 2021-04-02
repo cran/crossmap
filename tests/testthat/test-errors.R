@@ -1,3 +1,8 @@
+test_that("require_package", {
+  expect_error(print(require_package("invalid_package_name")), "print")
+  expect_error(print(require_package("base", ver = "9999.99.9")), "print")
+})
+
 test_that("require furrr", {
   local_mock(
     requireNamespace = function(x, ...) {if (x == "furrr") {FALSE} else {TRUE}}
@@ -17,36 +22,5 @@ test_that("message for no plan", {
     plan = function(...) {NULL},
     .env = "future"
   )
-  expect_warning(require_furrr())
-})
-
-test_that("require dplyr", {
-  local_mock(
-    requireNamespace = function(x, ...) {if (x == "dplyr") {FALSE} else {TRUE}}
-  )
-  expect_error(xmap_dfr(list(1:3, 1:3), ~ list(x = .x, y = .y)))
-})
-
-test_that("require broom", {
-  local_mock(
-    requireNamespace = function(x, ...) {if (x == "broom") {FALSE} else {TRUE}}
-  )
-  expect_error(suppressWarnings(cross_fit(mtcars, cyl, mpg ~ wt, tidy = TRUE)))
-})
-
-test_that("require dplyr 1.0.0", {
-  local_mock(
-    getNamespaceVersion = function(ns) {
-      if (is.character(ns) && ns == "dplyr") {
-        numeric_version("0.0.1")
-      } else {numeric_version("9999.9.9")}
-    }
-  )
-  expect_error(cross_fit(mtcars, cyl, mpg ~ wt))
-})
-
-test_that("R 3.3.0 for trimws", {
-  local_mock(getRversion = function() {"0.0.1"})
-  expect_error(autonames(unnamed, trimws = TRUE))
-  expect_error(require_r("3.3.0"))
+  expect_message(require_furrr(), "not set up to run background processes")
 })
