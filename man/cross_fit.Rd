@@ -9,7 +9,9 @@ cross_fit(
   formulas,
   cols = NULL,
   weights = NULL,
-  fn = stats::lm,
+  clusters = NULL,
+  families = NULL,
+  fn = lm,
   fn_args = list(),
   tidy = tidy_glance,
   tidy_args = list(),
@@ -34,6 +36,16 @@ If one of the elements is \code{\link{NULL}} or \code{\link{NA}}, that model wil
 be weighted.
 Defaults to \code{NULL}.}
 
+\item{clusters}{A list of columns passed to \code{clusters} if supported by \code{fn}.
+If one of the elements is \code{\link{NULL}} or \code{\link{NA}}, that model will not
+be clustered.
+Defaults to \code{NULL}.}
+
+\item{families}{A list of \link{glm} model families passed to \code{family} if
+supported by \code{fn}.
+Defaults to \code{\link[=gaussian]{gaussian("identity")}}, the equivalent of \code{\link[=lm]{lm()}}.
+See \link{family} for examples.}
+
 \item{fn}{The modeling function.
 Either an unquoted function name or a \link[purrr:map]{purrr}-style lambda
 function with two arguments.
@@ -49,7 +61,7 @@ If \code{FALSE}, \code{NA}, or \code{NULL}, the untidied model output will be re
 a list column named \code{fit}.
 An alternative function can be specified with an unquoted function name or
 a \link[purrr:map]{purrr}-style lambda function with one argument (see usage
-with \link[broom:reexports]{broom::tidy(conf.int = TRUE)} in examples).
+with \link[broom:tidy.lm]{broom::tidy(conf.int = TRUE)} in examples).
 Defaults to \link{tidy_glance}.}
 
 \item{tidy_args}{A list of additional arguments to the \code{tidy} function}
@@ -60,9 +72,10 @@ If \code{"warn"}, the function will produce a warning for subsets that produce
 an error and return results for all subsets that do not.}
 }
 \value{
-A tibble with subsetting columns,
-a column for the model formula applied,
-a column for the weights applied (if applicable),
+A tibble with a column for the model formula,
+columns for subsets,
+columns for the model family and type (if applicable),
+columns for the weights and clusters (if applicable),
 and columns of tidy model output or a list column of models
 (if \code{tidy = FALSE})
 }
@@ -101,6 +114,8 @@ cross_fit(
 }
 \seealso{
 \code{\link[=cross_fit_glm]{cross_fit_glm()}} to map a model across multiple model types.
+
+\code{\link[=cross_fit_robust]{cross_fit_robust()}} to map robust linear models.
 
 \code{\link[=xmap]{xmap()}} to apply any function to combinations of inputs.
 }

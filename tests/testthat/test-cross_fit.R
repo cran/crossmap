@@ -94,7 +94,7 @@ test_that("named formulas", {
 })
 
 test_that("tidiers", {
-  fit <- suppressWarnings(cross_fit(df, y ~ x, m, tidy = broom::tidy))
+  fit <- suppressWarnings(cross_fit(df, y ~ x, m, tidy = generics::tidy))
   expect_equal(nrow(fit), 4)
   expect_equal(ncol(fit), 7)
 
@@ -158,6 +158,42 @@ test_that("logit", {
   )
 })
 
+test_that("clusters", {
+  skip_if_not_installed("estimatr")
+
+  withr::local_package("dplyr")
+
+  fit <- suppressWarnings(
+    cross_fit(df, y ~ x, clusters = list(m, n, NULL), fn = estimatr::lm_robust)
+  ) %>%
+    dplyr::arrange(clusters)
+
+  fit_robust <- suppressWarnings(
+    cross_fit_robust(df, y ~ x, clusters = list(m, n, NULL))
+  ) %>%
+    dplyr::arrange(clusters)
+
+  fit_manual <- suppressWarnings(
+    purrr::map_dfr(
+      list(rlang::quo(m), rlang::quo(n), NULL),
+      ~ estimatr::lm_robust(y ~ x, data = df, clusters = !!.x) %>%
+        tidy_glance() %>%
+        dplyr::mutate(clusters = rlang::as_label(.x), .before = 1)
+    )
+  ) %>%
+    dplyr::as_tibble() %>%
+    dplyr::arrange(clusters)
+
+  expect_equal(fit$se_type, fit_manual$se_type)
+  expect_equal(fit[, -1], fit_manual)
+  expect_equal(fit, fit_robust)
+  expect_equal(names(fit)[1:3], c("model", "clusters", "term"))
+  expect_equal(nrow(fit), 6)
+  expect_equal(ncol(fit), 18)
+
+  expect_warning(cross_fit(df, y ~ x, clusters = list(m, n)))
+})
+
 test_that("no contrasts", {
   expect_error(cross_fit(df, x ~ m, n))
   expect_warning(
@@ -165,7 +201,7 @@ test_that("no contrasts", {
   )
   fit <- suppressWarnings(cross_fit(df, x ~ m, n, errors = "warn"))
   expect_equal(ncol(fit), 19)
-  expect_true( any(fit$term == "(Invalid model)"))
+  expect_true(any(fit$term == "(Invalid model)"))
   expect_false(all(fit$term == "(Invalid model)"))
 })
 
@@ -179,7 +215,8 @@ test_that("invalid tidiers", {
 })
 
 test_that("abort if not formulas", {
-  expect_error(cross_fit(df, "x", m), "x.*is of type.*character")
-  expect_error(cross_fit(df, list("x"), m), "x.*is of type.*character")
-  expect_error(cross_fit(df, as.list(letters), m), "c.*is of type.*character")
+  expect_error(cross_fit(df, "x", m), "x.*is of class.*character")
+  expect_error(cross_fit(df, list("x"), m), "x.*is of class.*character")
+  expect_error(cross_fit(df, as.list(letters), m), "c.*is of class.*character")
+  expect_error(cross_fit(df, as.list(letters), m), "... and 21 more")
 })

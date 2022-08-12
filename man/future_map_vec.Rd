@@ -12,6 +12,7 @@ future_map_vec(
   .x,
   .f,
   ...,
+  .class = NULL,
   .progress = FALSE,
   .options = furrr::furrr_options()
 )
@@ -21,6 +22,7 @@ future_map2_vec(
   .y,
   .f,
   ...,
+  .class = NULL,
   .progress = FALSE,
   .options = furrr::furrr_options()
 )
@@ -29,6 +31,7 @@ future_pmap_vec(
   .l,
   .f,
   ...,
+  .class = NULL,
   .progress = FALSE,
   .options = furrr::furrr_options()
 )
@@ -37,6 +40,7 @@ future_imap_vec(
   .x,
   .f,
   ...,
+  .class = NULL,
   .progress = FALSE,
   .options = furrr::furrr_options()
 )
@@ -45,6 +49,7 @@ future_xmap_vec(
   .l,
   .f,
   ...,
+  .class = NULL,
   .progress = FALSE,
   .options = furrr::furrr_options()
 )
@@ -74,11 +79,20 @@ present, the value of \code{.default} will be returned.}
 
 \item{...}{Additional arguments passed on to \code{.f}}
 
-\item{.progress}{A logical, for whether or not to print a progress bar for
-multiprocess, multisession, and multicore plans}
+\item{.class}{If \code{.class} is specified, all}
 
-\item{.options}{The \code{future} specific options to use with the workers.
-This must be the result from a call to \code{\link[furrr:furrr_options]{furrr::furrr_options()}}}
+\item{.progress}{A single logical. Should a progress bar be displayed?
+Only works with multisession, multicore, and multiprocess futures. Note
+that if a multicore/multisession future falls back to sequential, then
+a progress bar will not be displayed.
+
+\strong{Warning:} The \code{.progress} argument will be deprecated and removed
+in a future version of furrr in favor of using the more robust
+\href{https://CRAN.R-project.org/package=progressr}{progressr}
+package.}
+
+\item{.options}{The \code{future} specific options to use with the workers. This
+must be the result from a call to \code{\link[furrr:furrr_options]{furrr_options()}}.}
 
 \item{.y}{A vector the same length as \code{.x}.
 Vectors of length 1 will be recycled.}

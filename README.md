@@ -6,12 +6,14 @@
 <!-- badges: start -->
 
 [![](https://www.r-pkg.org/badges/version/crossmap?color=brightgreen)](https://cran.r-project.org/package=crossmap)
+[![crossmap status
+badge](https://rossellhayes.r-universe.dev/badges/crossmap)](https://rossellhayes.r-universe.dev)
 [![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://cran.r-project.org/web/licenses/MIT)
 [![R build
 status](https://github.com/rossellhayes/crossmap/workflows/R-CMD-check/badge.svg)](https://github.com/rossellhayes/crossmap/actions)
-[![](https://codecov.io/gh/rossellhayes/crossmap/branch/main/graph/badge.svg)](https://codecov.io/gh/rossellhayes/crossmap)
+[![](https://codecov.io/gh/rossellhayes/crossmap/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rossellhayes/crossmap)
 [![CodeFactor](https://www.codefactor.io/repository/github/rossellhayes/crossmap/badge)](https://www.codefactor.io/repository/github/rossellhayes/crossmap)
 [![Dependencies](https://tinyverse.netlify.com/badge/crossmap)](https://cran.r-project.org/package=crossmap)
 <!-- badges: end -->
@@ -69,10 +71,7 @@ xmap_mat(list(1:3, 1:6), prod)
 versions of the `xmap()` functions.
 
 ``` r
-future::plan("multiprocess")
-#> Warning: Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead,
-#> explicitly specify either 'multisession' or 'multicore'. In the current R
-#> session, 'multiprocess' equals 'multisession'.
+future::plan("multisession")
 future_xmap_chr(list(1:3, 1:3), ~ paste(.x, "*", .y, "=", .x * .y))
 #> [1] "1 * 1 = 1" "2 * 1 = 2" "3 * 1 = 3" "1 * 2 = 2" "2 * 2 = 4" "3 * 2 = 6"
 #> [7] "1 * 3 = 3" "2 * 3 = 6" "3 * 3 = 9"
@@ -89,20 +88,20 @@ cross_fit(
   cols     = c(cyl, vs),
   weights  = c(wt, NA)
 )
-#> # A tibble: 40 x 21
-#>    model   cyl    vs weights term       estimate  std.error statistic    p.value
-#>    <chr> <dbl> <dbl> <chr>   <chr>         <dbl>      <dbl>     <dbl>      <dbl>
-#>  1 hp        4     0 NA      (Intercep~   26     NaN        NaN       NaN       
-#>  2 hp        4     0 NA      hp           NA      NA         NA        NA       
-#>  3 hp        4     0 wt      (Intercep~   26.0   NaN        NaN       NaN       
-#>  4 hp        4     0 wt      hp           NA      NA         NA        NA       
-#>  5 hp        4     1 NA      (Intercep~   36.0     5.52e+ 0   6.52e 0   1.85e- 4
-#>  6 hp        4     1 NA      hp           -0.113   6.55e- 2  -1.73e 0   1.21e- 1
-#>  7 hp        4     1 wt      (Intercep~   36.2     5.44e+ 0   6.66e 0   1.59e- 4
-#>  8 hp        4     1 wt      hp           -0.125   6.39e- 2  -1.95e 0   8.73e- 2
-#>  9 hp        6     0 NA      (Intercep~   23.2     1.02e-14   2.28e15   2.79e-16
-#> 10 hp        6     0 NA      hp           -0.02    7.53e-17  -2.66e14   2.40e-15
-#> # ... with 30 more rows, and 12 more variables: r.squared <dbl>,
+#> # A tibble: 40 × 21
+#>    model weights   cyl    vs term      estimate  std.error  statistic    p.value
+#>    <chr> <chr>   <dbl> <dbl> <chr>        <dbl>      <dbl>      <dbl>      <dbl>
+#>  1 hp    NA          4     0 (Interce…  26      NaN        NaN        NaN       
+#>  2 hp    NA          4     0 hp         NA       NA         NA         NA       
+#>  3 hp    NA          4     1 (Interce…  36.0      5.52e+ 0   6.52e+ 0   1.85e- 4
+#>  4 hp    NA          4     1 hp         -0.113    6.55e- 2  -1.73e+ 0   1.21e- 1
+#>  5 hp    NA          6     0 (Interce…  23.2      1.02e-14   2.28e+15   2.79e-16
+#>  6 hp    NA          6     0 hp         -0.0200   7.53e-17  -2.66e+14   2.40e-15
+#>  7 hp    NA          6     1 (Interce…  24.2      1.41e+ 1   1.72e+ 0   2.28e- 1
+#>  8 hp    NA          6     1 hp         -0.0440   1.22e- 1  -3.61e- 1   7.52e- 1
+#>  9 hp    NA          8     0 (Interce…  18.1      2.99e+ 0   6.05e+ 0   5.74e- 5
+#> 10 hp    NA          8     0 hp         -0.0142   1.39e- 2  -1.02e+ 0   3.26e- 1
+#> # … with 30 more rows, and 12 more variables: r.squared <dbl>,
 #> #   adj.r.squared <dbl>, sigma <dbl>, model.statistic <dbl>,
 #> #   model.p.value <dbl>, df <dbl>, logLik <dbl>, AIC <dbl>, BIC <dbl>,
 #> #   deviance <dbl>, df.residual <int>, nobs <int>
@@ -118,7 +117,7 @@ cross_list(number = 1:3, letter = letters[1:3])
 #> $letter
 #> [1] "a" "a" "a" "b" "b" "b" "c" "c" "c"
 cross_tbl(number = 1:3, letter = letters[1:3])
-#> # A tibble: 9 x 2
+#> # A tibble: 9 × 2
 #>   number letter
 #>    <int> <chr> 
 #> 1      1 a     
@@ -142,7 +141,7 @@ cross_join(
   ),
   tibble(dessert = c("cupcake", "muffin", "streudel"), makes = c(8, 6, 1))
 )
-#> # A tibble: 9 x 4
+#> # A tibble: 9 × 4
 #>   color  fruit      dessert  makes
 #>   <chr>  <chr>      <chr>    <dbl>
 #> 1 red    apple      cupcake      8
@@ -162,7 +161,7 @@ means you don’t have to worry about adding `_int()`, `_dbl()` or
 
 ``` r
 map_vec(sample(5), ~ . ^ 2)
-#> [1] 25 16  4  1  9
+#> [1]  4  1  9 16 25
 map_vec(c("apple", "banana", "cantaloupe"), paste0, "s")
 #> [1] "apples"      "bananas"     "cantaloupes"
 ```

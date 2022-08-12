@@ -1,3 +1,32 @@
+# crossmap 0.3.3
+
+* Update roxygen version to avoid CRAN NOTE.
+* Remove `broomExtra` from suggested packages, because it was archived on CRAN.
+
+# crossmap 0.3.2
+
+## New features
+* The `map_vec()` family of functions gain a `.class` argument, which coerces each element of the output to the given class.
+
+## Enhancements
+* The `map_vec()` family of functions can now return vectors with S3 classes in addition to base classes.
+* `tidy_glance()` (and functions that call it) now use `generics` instead of `broomExtra`.
+  - `broom` and `broomExtra` are now Suggested packages.
+
+# crossmap 0.3.1
+
+## New features
+* `cross_fit()` gains the argument `clusters`, allowing mapping along cluster specifications for functions that support it, like `estimatr::lm_robust()`.
+* `cross_fit_robust()` is a wrapper for `cross_fit(fn = estimatr::lm_robust)`.
+
+## Enhancements
+* `tidy_glance()` (and functions that call it) now use `broomExtra` instead of `broom` to support more model types.
+* Functions now use `rlang::check_installed()` for suggested packages, giving the user the option to install the package interactively.
+
+## Miscellaneous
+* Use `cli` to generate error messages.
+* Move `stats` from suggested to imported packages.
+
 # crossmap 0.3.0
 
 ## New features
