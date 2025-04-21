@@ -16,7 +16,11 @@ strings (to index into names) or
 missing (to keep all elements at a given level).
 
 Unlike \code{\link[purrr:pluck]{purrr::pluck()}},
-each accessor may be a vector to extract multiple elements.}
+each accessor may be a vector to extract multiple elements.
+
+If an accessor has length 0
+(e.g. \code{\link{NULL}}, \code{\link[=character]{character(0)}} or \code{\link[=numeric]{numeric(0)}}),
+\code{xpluck()} will return \code{\link{NULL}}.}
 
 \item{.default}{Value to use if target is \code{\link{NULL}} or absent.}
 }

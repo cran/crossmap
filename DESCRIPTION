@@ -1,6 +1,6 @@
 Package: crossmap
 Title: Apply Functions to All Combinations of List Elements
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: 
     person("Alexander", "Rossell Hayes", , "alexander@rossellhayes.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-9412-0457"))
@@ -19,11 +19,11 @@ Imports: backports, cli, dplyr (>= 1.0.0), generics, lifecycle, purrr,
 Suggests: broom, covr, crayon, estimatr, furrr, future, testthat,
         tibble, withr
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2023-01-12 20:40:53 UTC; alex
+Packaged: 2025-04-21 23:25:52 UTC; alex
 Author: Alexander Rossell Hayes [aut, cre, cph]
     (<https://orcid.org/0000-0001-9412-0457>)
 Maintainer: Alexander Rossell Hayes <alexander@rossellhayes.com>
 Repository: CRAN
-Date/Publication: 2023-01-12 21:50:02 UTC
+Date/Publication: 2025-04-21 23:40:02 UTC

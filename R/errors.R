@@ -52,7 +52,7 @@ abort_if_not_formulas <- function(x) {
 
 warn_if_not_matrix <- function(.l) {
   if (length(.l) > 2) {
-    call <- sys.call(-1)
+    call <- rlang::caller_call()
 
     new_call      <- call
     new_call[[1]] <- rlang::sym(gsub("mat$", "arr", as.character(call[[1]])))
@@ -60,7 +60,7 @@ warn_if_not_matrix <- function(.l) {
     cli::cli_warn(
       c(
         "!" = paste(
-          "{.fun {call[1]}}",
+          "{.fun {call[[1]]}}",
           "returned an array because it has more than 2 dimensions."
         ),
         "*" = "Try {.code {format(new_call)}} to avoid this warning."
@@ -73,31 +73,43 @@ require_furrr <- function() {
   rlang::check_installed("furrr",  "to use parallelized functions.")
   rlang::check_installed("future", "to use parallelized functions.")
 
-  check_unparallelized(fn = format(sys.call(-1)[1]))
+  check_unparallelized(fn = rlang::caller_call()[[1]])
 }
 
-check_unparallelized <- function(fn) {
-  plan    <- future::plan()
-  base_fn <- gsub("future_", "", fn)
+check_unparallelized <- function(fn = NULL) {
+  plan <- future::plan()
+
+  unparallelized_message <- c(
+    if (is.null(fn)) {
+      c("!" = "Your R session is not set up to run background processes.")
+    } else {
+      c("!" = "{.fun {fn}} is not set up to run background processes.")
+    },
+    "i" = "Check {.help [?future::plan()](future::plan)} for more details."
+  )
 
   if (future::availableCores() < 2) {
-    cli::cli_inform(
-      c(
-        "!" = "{.fun {fn}} is not set up to run background processes.",
-        "i" = "You can use {.fun {base_fn}} to avoid this warning.",
-        "i" = "Check {.code help(plan, future)} for more details."
+    if (length(fn) == 1) {
+      base_fn <- gsub("future_", "", fn)
+
+      unparallelized_message <- append(
+        unparallelized_message,
+        c("i" = "You can use {.fun {base_fn}} to avoid this warning."),
+        after = 1
       )
-    )
+    }
+
+    cli::cli_inform(unparallelized_message)
   } else if (
     "uniprocess" %in% class(plan) ||
     is.null(plan) ||
     ("multicore" %in% class(plan) && !future::supportsMulticore())
   ) {
     cli::cli_inform(
-      c(
-        "!" = "{.fun {fn}} is not set up to run background processes.",
-        "*" = 'Try running {.code future::plan("multisession")}.',
-        "i" = "Check {.code help(plan, future)} for more details."
+      append(
+        unparallelized_message,
+        c("*" = 'Try running {.run future::plan("multisession")}.'),
+        after = 1
       )
     )
   }

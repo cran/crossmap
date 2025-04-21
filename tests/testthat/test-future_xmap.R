@@ -5,10 +5,13 @@ test_dat  <- seq_len(3)
 test_l    <- list(test_dat, test_dat)
 
 for (.e in executors) {
-  # Don't test multicore on non-Mac
-  if (.e == "multicore" && system.os != "Darwin") {next}
+  # Don't test multicore on non-Mac or within RStudio
+  if (
+    .e == "multicore" &&
+    (system.os != "Darwin" || Sys.getenv("RSTUDIO", "") == "1")
+  ) {next}
 
-  if (requireNamespace("future", quietly = TRUE)) {future::plan(.e)}
+  if (rlang::is_installed("future")) {future::plan(.e)}
 
   test_that(test_msg(.e, "equivalence with xmap()"), {
     skip_if_not_installed("furrr")

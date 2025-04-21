@@ -1,3 +1,7 @@
+# crossmap 0.4.1
+
+* Non-user-facing changes to fix test failures.
+
 # crossmap 0.4.0
 
 * Add `xpluck()` function.
