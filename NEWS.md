@@ -1,3 +1,7 @@
+# crossmap 0.4.2
+
+* Skip testing future functions on CRAN to avoid issues.
+
 # crossmap 0.4.1
 
 * Non-user-facing changes to fix test failures.

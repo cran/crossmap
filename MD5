@@ -1,7 +1,7 @@
-fed0632859f716fbd627c8037307e18e *DESCRIPTION
+9eced51e8a059a804f955a58f6d13afb *DESCRIPTION
 74eafcc1efcfbc9e373c267c10b488f5 *LICENSE
 68c68635657576a503c64bf73a364939 *NAMESPACE
-f2520bb872d84053970d2af5ca0201ce *NEWS.md
+de7820348cb87e5f9c1afdf59e10bb07 *NEWS.md
 1ea51d2b32f1bdf4277fa0a2d7aad2ce *R/autonames.R
 7d5246c0b4ec77e0b7adc5bcb45faed2 *R/compact_null.R
 e1812d93c4489a428b28fd6fc0437708 *R/cross_fit.R
@@ -57,8 +57,8 @@ d124e7d1e7434bb017bdcde32311e611 *man/xpluck.Rd
 1466c485ff97149e14664df9c69e2378 *tests/testthat/test-cross_fit_glm.R
 6b29802e0055d944deda3af97b45b3dc *tests/testthat/test-cross_join.R
 c326a008f14c50e05691e403f8741ad7 *tests/testthat/test-cross_list.R
-356517ea70aff818df23ddcd974a967b *tests/testthat/test-errors.R
-d526508d252fcda6036c17781b45b336 *tests/testthat/test-future_xmap.R
+04a110a90627aabc1b199f68ce5c986f *tests/testthat/test-errors.R
+895000c440334ace30eb0f0dd011de24 *tests/testthat/test-future_xmap.R
 1e40bcb32f9bc088a915928e23031783 *tests/testthat/test-map_vec.R
 401ba6470cc7a41deee1a79a682559e5 *tests/testthat/test-xmap.R
 a45f3898f3d83357c57537908c869aa2 *tests/testthat/test-xmap_mat.R
