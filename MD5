@@ -1,7 +1,7 @@
-9eced51e8a059a804f955a58f6d13afb *DESCRIPTION
+ab45d255bfa43c203218346dea2ae236 *DESCRIPTION
 74eafcc1efcfbc9e373c267c10b488f5 *LICENSE
 68c68635657576a503c64bf73a364939 *NAMESPACE
-de7820348cb87e5f9c1afdf59e10bb07 *NEWS.md
+30c6bd82d1b5727bf686541471b1fc02 *NEWS.md
 1ea51d2b32f1bdf4277fa0a2d7aad2ce *R/autonames.R
 7d5246c0b4ec77e0b7adc5bcb45faed2 *R/compact_null.R
 e1812d93c4489a428b28fd6fc0437708 *R/cross_fit.R
@@ -12,7 +12,7 @@ bf47e18539364c90c18311401c03eb3f *R/cross_fit_internal_internal.R
 04b6ebb18095332901f4ce9f62e15cf7 *R/cross_join.R
 557204b6f4a28e9de025bd5d68279692 *R/cross_list.R
 a6120b2a9b4f00cf39314d9a1c9b1995 *R/crossmap-package.R
-2b5467dbac37ab06357f37b2db78ed6e *R/errors.R
+951f137759cac427dc88a5f73cadb8bc *R/errors.R
 4c1816141c25ae649b25865c4d337479 *R/future_map_vec.R
 17d460375a2c631151058478ae6f69de *R/future_xmap.R
 25128b441d8688505e10d305b505f06c *R/future_xmap_mat.R
@@ -27,10 +27,10 @@ d3c96e2fec17150bb1db6e63cf4a6faa *README.md
 504b146e3dbfbcb77e1ddff64ed7c618 *man/autonames.Rd
 d6e0f30f22db21df448eed42812f3e46 *man/cross_fit.Rd
 d266da8eb72890d71e3d272719dc4edf *man/cross_fit_glm.Rd
-de6b6fa61a550d54e95799c738945190 *man/cross_fit_robust.Rd
+7dc0740e90413added7246cb261d3734 *man/cross_fit_robust.Rd
 54090b9fc18a6af182dcc5c05e71987f *man/cross_join.Rd
 ad244cf78273f038e328b1a0b0141963 *man/cross_list.Rd
-f4d5f23523bac2ebc5fb7c455291edca *man/crossmap-package.Rd
+57cc8563f5e25e38481afd5b697c588c *man/crossmap-package.Rd
 c374bbe63cefcaf3b1f28871b09a65e9 *man/examples/example-xpluck.R
 a1cbaf3f328e8d74e747faacf640c7fc *man/figures/lifecycle-archived.svg
 6f521fb1819410630e279d1abf88685a *man/figures/lifecycle-defunct.svg
